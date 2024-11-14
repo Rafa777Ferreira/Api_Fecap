@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Combustíveis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Dashboard de Preços de Combustíveis</h1>
+    
+    <h3>Média Mensal do Preço de Combustível por Ano, Estado e Tipo</h3>
+    <form id="form-grafico" action="/test_grafico" method="get">
+        <label for="ano">Selecione o Ano:</label>
+        <select id="ano" name="ano">
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+
+        <label for="estado">Selecione o Estado:</label>
+        <select id="estado" name="estado">
+            <option value="SP">SP</option>
+            <option value="RJ">RJ</option>
+            <option value="MG">MG</option>
+            <option value="AC">AC</option>
+            <option value="AL">AL</option>
+            <option value="AP">AP</option>
+            <option value="AM">AM</option>
+            <option value="BA">BA</option>
+            <option value="CE">CE</option>
+            <option value="DF">DF</option>
+            <option value="ES">ES</option>
+            <option value="GO">GO</option>
+            <option value="MA">MA</option>
+            <option value="MT">MT</option>
+            <option value="MS">MS</option>
+            <option value="PA">PA</option>
+            <option value="PB">PB</option>
+            <option value="PE">PE</option>
+            <option value="PI">PI</option>
+            <option value="RN">RN</option>
+            <option value="RO">RO</option>
+            <option value="RR">RR</option>
+            <option value="SC">SC</option>
+            <option value="SE">SE</option>
+            <option value="TO">TO</option>
+        </select>
+
+        <label for="produto">Selecione o Tipo de Combustível:</label>
+        <select id="produto" name="produto">
+            <option value="GASOLINA">Gasolina</option>
+            <option value="ETANOL">Etanol</option>
+            <option value="DIESEL">Diesel</option>
+            <option value="GNV">GNV</option>
+        </select>
+
+        <button type="submit">Gerar Gráfico</button>
+    </form>
+
+    <h3>Gráfico Gerado:</h3>
+    <img id="grafico" src="" alt="Gráfico de Preço de Combustível" style="max-width: 600px; display: none;">
+
+    <script>
+        document.getElementById("form-grafico").onsubmit = async function(event) {
+            event.preventDefault();
+            const ano = document.getElementById("ano").value;
+            const estado = document.getElementById("estado").value;
+            const produto = document.getElementById("produto").value;
+            const response = await fetch(`/test_grafico?ano=${ano}&estado=${estado}&produto=${produto}`);
+            const data = await response.json();
+            document.getElementById("grafico").src = `data:image/png;base64,${data.grafico}`;
+            document.getElementById("grafico").style.display = 'block';
+        };
+    </script>
+</body>
+</html>
